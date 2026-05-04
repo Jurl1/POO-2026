@@ -80,7 +80,7 @@ void Widget::on_btnLogin_clicked() {
         v->show();
 
         // 4. SOBRESCRIBIMOS la base de datos principal
-        QString ahora = QDateTime::currentDateTime().toString("yyyy-MM-dd HH:mm:ss");
+        QString ahora = QDateTime::currentDateTime().toString("dd-MM-yyyy HH:mm:ss");
 
         QSqlQuery update;
         update.prepare("UPDATE usuarios SET ultimo_ingreso = :ahora WHERE usuario = :u");
