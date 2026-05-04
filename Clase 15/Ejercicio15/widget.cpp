@@ -10,6 +10,8 @@
 #include <QDir>
 #include <QFileInfo>
 
+
+
 Widget::Widget(QWidget *parent)
     : QWidget(parent)
     , ui(new Ui::Widget)
@@ -73,14 +75,17 @@ void Widget::on_btnLogin_clicked() {
 
         // 3. SOBRESCRIBIMOS la base de datos con la fecha y hora de ESTE ingreso
         // Esto es lo que se verá la PRÓXIMA vez que el usuario entre.
-        QString ahora = QDateTime::currentDateTime().toString("yyyy-MM-dd HH:mm:ss");
+        QDateTime ahora = QDateTime::currentDateTime(); // Pasa el objeto, no el string
         QSqlQuery update;
         update.prepare("UPDATE usuarios SET ultimo_ingreso = :ahora WHERE usuario = :u");
         update.bindValue(":ahora", ahora);
         update.bindValue(":u", user);
 
+        // Ejecuta SOLO una vez dentro del condicional
         if (!update.exec()) {
             qDebug() << "Error al actualizar fecha:" << update.lastError().text();
+        } else {
+            qDebug() << "Se actualizo la fecha";
         }
 
         // 4. Cerramos la ventana de Login
