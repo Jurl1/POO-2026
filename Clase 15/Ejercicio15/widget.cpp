@@ -8,9 +8,7 @@
 #include <QDateTime>
 #include <QCoreApplication>
 #include <QDir>
-#include <QFileInfo>
-
-
+#include <QFile> // <-- Fundamental para el candado de seguridad
 
 Widget::Widget(QWidget *parent)
     : QWidget(parent)
@@ -20,26 +18,31 @@ Widget::Widget(QWidget *parent)
 
     QSqlDatabase db = QSqlDatabase::addDatabase("QSQLITE");
 
-    // Lógica para encontrar la carpeta raíz (fuera de build/debug)
+    // LÓGICA INFALIBLE: Buscamos la carpeta root usando tu propio código como faro
     QDir dir(QCoreApplication::applicationDirPath());
-    while (dir.dirName().contains("build") ||
-           dir.dirName() == "debug" ||
-           dir.dirName() == "release") {
+
+    // Mientras la carpeta actual NO contenga "widget.cpp", seguimos subiendo niveles
+    while (!dir.exists("widget.cpp") && !dir.isRoot()) {
         dir.cdUp();
     }
 
+    // Una vez que el bucle frena, estamos 100% seguros de que estamos en el root
     QString rutaDB = dir.absolutePath() + "/base_de_datos_POO.db";
+
+    // CANDADO DE SEGURIDAD: Evita que SQLite cree archivos adicionales
+    if (!QFile::exists(rutaDB)) {
+        QMessageBox::critical(this, "Error Crítico",
+                              "No se encontró la base de datos original en el root:\n" + rutaDB +
+                                  "\n\nEl programa se niega a crear copias adicionales.");
+        return; // Cortamos la ejecución acá
+    }
+
     db.setDatabaseName(rutaDB);
 
     if (!db.open()) {
-        QMessageBox::critical(this, "Error", "No se pudo abrir la base de datos en:\n" + rutaDB);
-    } else {
-        QSqlQuery init;
-        init.exec("CREATE TABLE IF NOT EXISTS usuarios "
-                  "(usuario TEXT PRIMARY KEY, clave TEXT NOT NULL, ultimo_ingreso TEXT)");
-        // Insertamos el admin solo si no existe para no pisar tus datos de SQLiteStudio
-        init.exec("INSERT OR IGNORE INTO usuarios VALUES ('admin', '1234', '')");
+        QMessageBox::critical(this, "Error", "Se encontró el archivo pero no se pudo abrir.");
     }
+    // Eliminamos todo el código de CREATE TABLE para asegurar que solo use tu archivo
 }
 
 Widget::~Widget() {
@@ -69,26 +72,28 @@ void Widget::on_btnLogin_clicked() {
         // 1. Capturamos la fecha vieja (la que está guardada de antes)
         QString fechaAnterior = query.value(0).toString();
 
-        // 2. Creamos la ventana de Bienvenida con esa fecha "vieja"
+        // 2. Liberamos la consulta de lectura para que no bloquee la base de datos
+        query.finish();
+
+        // 3. Creamos la ventana de Bienvenida con esa fecha "vieja"
         Bienvenida *v = new Bienvenida(user, fechaAnterior);
         v->show();
 
-        // 3. SOBRESCRIBIMOS la base de datos con la fecha y hora de ESTE ingreso
-        // Esto es lo que se verá la PRÓXIMA vez que el usuario entre.
-        QDateTime ahora = QDateTime::currentDateTime(); // Pasa el objeto, no el string
+        // 4. SOBRESCRIBIMOS la base de datos principal
+        QString ahora = QDateTime::currentDateTime().toString("yyyy-MM-dd HH:mm:ss");
+
         QSqlQuery update;
         update.prepare("UPDATE usuarios SET ultimo_ingreso = :ahora WHERE usuario = :u");
         update.bindValue(":ahora", ahora);
         update.bindValue(":u", user);
 
-        // Ejecuta SOLO una vez dentro del condicional
         if (!update.exec()) {
-            qDebug() << "Error al actualizar fecha:" << update.lastError().text();
+            qDebug() << "Error al actualizar fecha en la BD principal:" << update.lastError().text();
         } else {
-            qDebug() << "Se actualizo la fecha";
+            qDebug() << "Éxito: Se actualizó la fecha en el archivo root.";
         }
 
-        // 4. Cerramos la ventana de Login
+        // 5. Cerramos la ventana de Login
         this->close();
 
     } else {
