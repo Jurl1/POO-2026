@@ -22,3 +22,42 @@ Ejercicio 3:
     Utilizar un vector para almacenar estos objetos.
     Agregar tantos objetos hasta consumir 200 MB de RAM. Cuando alcance esto, no incoporar más objetos y publicar la cantidad de objetos agregados.
     Resolver únicamente con las clases, funciones y estructuras vistas hasta el momento en la asignatura y en asignaturas anteriores.
+
+Ejercicio 4:
+
+    Usar el código del ejemplo del control de volumen
+    Cuando el valor del QSlider se modifique, colocar como título de la ventana el mismo valor que tiene el QSlider.
+
+Ejemplo: Control de volumen
+
+#include <QApplication>
+#include <QWidget>
+#include <QHBoxLayout>
+#include <QSlider>
+#include <QSpinBox>
+
+int main( int argc, char** argv )  {
+    QApplication a( argc, argv );
+
+    QWidget * ventana = new QWidget;  // Es la ventana padre (principal)
+    ventana->setWindowTitle( "Volumen" );
+    ventana->resize( 300, 50 );
+
+    QSpinBox * spinBox = new QSpinBox;
+    QSlider * slider = new QSlider( Qt::Horizontal );
+    spinBox->setRange( 0, 100 );
+    slider->setRange( 0, 100 );
+
+    QObject::connect( spinBox, SIGNAL( valueChanged( int ) ), slider, SLOT( setValue( int ) ) );
+    QObject::connect( slider, SIGNAL( valueChanged( int ) ),  spinBox, SLOT( setValue( int ) ) );
+
+    spinBox->setValue( 15 );
+
+    QHBoxLayout * layout = new QHBoxLayout;
+    layout->addWidget( spinBox );
+    layout->addWidget( slider );
+    ventana->setLayout( layout );
+    ventana->setVisible( true );
+
+    return a.exec();
+}
