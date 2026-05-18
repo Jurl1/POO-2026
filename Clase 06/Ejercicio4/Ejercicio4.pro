@@ -1,4 +1,5 @@
-QT += core gui widgets network
+QT += core gui widgets
 
-SOURCES += \
-    main.cpp
+CONFIG += c++17
+
+SOURCES += main.cpp

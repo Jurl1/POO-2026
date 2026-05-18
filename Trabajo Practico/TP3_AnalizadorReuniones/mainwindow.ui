@@ -1,0 +1,377 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>MainWindow</class>
+ <widget class="QMainWindow" name="MainWindow">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>1100</width>
+    <height>780</height>
+   </rect>
+  </property>
+  <property name="windowTitle">
+   <string>Analizador de Reuniones</string>
+  </property>
+  <property name="styleSheet">
+   <string>QMainWindow, QWidget#centralwidget { background-color: #0e0e0f; }
+QWidget { color: #e8e6e0; font-family: "Segoe UI"; font-size: 13px; }
+QTabWidget::pane { border: 1px solid #2a2a2e; background-color: #141416; }
+QTabBar::tab { background-color: #0e0e0f; color: #6b6b70; padding: 10px 28px; border: none; border-bottom: 2px solid transparent; font-size: 12px; letter-spacing: 1px; }
+QTabBar::tab:selected { color: #f0a500; border-bottom: 2px solid #f0a500; background-color: #141416; }
+QTabBar::tab:hover:!selected { color: #c8c6c0; }
+QPlainTextEdit { background-color: #111113; border: 1px solid #2a2a2e; border-radius: 4px; color: #d8d6d0; padding: 10px; selection-background-color: #f0a500; selection-color: #0e0e0f; }
+QPlainTextEdit:focus { border: 1px solid #f0a500; }
+QLineEdit { background-color: #111113; border: 1px solid #2a2a2e; border-radius: 4px; color: #e8e6e0; padding: 6px 10px; }
+QLineEdit:focus { border: 1px solid #f0a500; }
+QGroupBox { border: 1px solid #2a2a2e; border-radius: 4px; margin-top: 14px; padding-top: 8px; font-size: 11px; letter-spacing: 1px; color: #6b6b70; }
+QGroupBox::title { subcontrol-origin: margin; left: 12px; padding: 0 6px; }
+QScrollBar:vertical { background: #111113; width: 8px; border: none; }
+QScrollBar::handle:vertical { background: #2a2a2e; border-radius: 4px; min-height: 20px; }
+QScrollBar::handle:vertical:hover { background: #f0a500; }
+QScrollBar::add-line:vertical, QScrollBar::sub-line:vertical { height: 0px; }
+QStatusBar { background-color: #0a0a0b; color: #6b6b70; border-top: 1px solid #2a2a2e; font-size: 11px; }
+QFrame#frameHeader { background-color: #0a0a0b; border-bottom: 1px solid #f0a500; }
+QFrame#frameControles { background-color: #0a0a0b; border-bottom: 1px solid #2a2a2e; }
+QLabel#lblAppTitle { color: #f0a500; font-size: 18px; font-weight: bold; letter-spacing: 3px; }
+QLabel#lblAppSubtitle { color: #6b6b70; font-size: 11px; letter-spacing: 1px; }
+QLabel#lblTema { color: #6b6b70; font-size: 11px; letter-spacing: 1px; }
+QLabel#lblApiKey { color: #6b6b70; font-size: 11px; letter-spacing: 1px; }
+QLabel#lblEstadisticas { color: #4a4a50; font-size: 10px; letter-spacing: 1px; }
+QFrame#frameDropZone { border: 2px dashed #2a2a2e; border-radius: 6px; background-color: #0d0d0f; }</string>
+  </property>
+  <widget class="QWidget" name="centralwidget">
+   <layout class="QVBoxLayout" name="layoutPrincipal">
+    <property name="spacing">
+     <number>0</number>
+    </property>
+    <item>
+     <widget class="QFrame" name="frameHeader">
+      <property name="minimumHeight">
+       <number>56</number>
+      </property>
+      <layout class="QHBoxLayout" name="layoutHeader">
+       <item>
+        <widget class="QLabel" name="lblAppTitle">
+         <property name="text">
+          <string>ANALIZADOR DE REUNIONES</string>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <spacer name="spacerHeader">
+         <property name="orientation">
+          <enum>Qt::Horizontal</enum>
+         </property>
+         <property name="sizeHint" stdset="0">
+          <size>
+           <width>40</width>
+           <height>20</height>
+          </size>
+         </property>
+        </spacer>
+       </item>
+       <item>
+        <widget class="QLabel" name="lblEstadisticas">
+         <property name="text">
+          <string>Analisis en esta sesion: 0</string>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <widget class="QLabel" name="lblAppSubtitle">
+         <property name="text">
+          <string>  POWERED BY GEMINI 2.5</string>
+         </property>
+        </widget>
+       </item>
+      </layout>
+     </widget>
+    </item>
+    <item>
+     <widget class="QFrame" name="frameControles">
+      <property name="minimumHeight">
+       <number>52</number>
+      </property>
+      <layout class="QHBoxLayout" name="layoutControles">
+       <item>
+        <widget class="QLabel" name="lblTema">
+         <property name="text">
+          <string>TEMA</string>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <widget class="QLineEdit" name="txtTema">
+         <property name="placeholderText">
+          <string>Tema o asunto de la reunion...</string>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <widget class="QLabel" name="lblApiKey">
+         <property name="text">
+          <string>  API KEY</string>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <widget class="QLineEdit" name="txtApiKey">
+         <property name="echoMode">
+          <enum>QLineEdit::Password</enum>
+         </property>
+         <property name="placeholderText">
+          <string>AIza...</string>
+         </property>
+         <property name="maximumWidth">
+          <number>200</number>
+         </property>
+        </widget>
+       </item>
+      </layout>
+     </widget>
+    </item>
+    <item>
+     <widget class="QTabWidget" name="tabWidget">
+      <property name="documentMode">
+       <bool>true</bool>
+      </property>
+      <widget class="QWidget" name="tabTranscripcion">
+       <attribute name="title">
+        <string>TRANSCRIPCION</string>
+       </attribute>
+       <layout class="QVBoxLayout" name="layoutTab1">
+        <property name="leftMargin">
+         <number>16</number>
+        </property>
+        <property name="topMargin">
+         <number>16</number>
+        </property>
+        <property name="rightMargin">
+         <number>16</number>
+        </property>
+        <property name="bottomMargin">
+         <number>16</number>
+        </property>
+        <property name="spacing">
+         <number>10</number>
+        </property>
+        <item>
+         <widget class="QFrame" name="frameDropZone">
+          <property name="minimumHeight">
+           <number>72</number>
+          </property>
+          <property name="maximumHeight">
+           <number>72</number>
+          </property>
+          <layout class="QHBoxLayout" name="layoutDropZone">
+           <item>
+            <widget class="QLabel" name="lblDropHint">
+             <property name="text">
+              <string>Arrastra un archivo .txt o .docx aqui, o usa el boton</string>
+             </property>
+             <property name="styleSheet">
+              <string>color: #3a3a3e; font-size: 12px; letter-spacing: 1px;</string>
+             </property>
+             <property name="alignment">
+              <set>Qt::AlignCenter</set>
+             </property>
+            </widget>
+           </item>
+           <item>
+            <widget class="QPushButton" name="btnCargarArchivo">
+             <property name="text">
+              <string>CARGAR ARCHIVO</string>
+             </property>
+             <property name="minimumWidth">
+              <number>150</number>
+             </property>
+             <property name="styleSheet">
+              <string>QPushButton { background-color: transparent; color: #f0a500; border: 1px solid #f0a500; border-radius: 4px; padding: 8px 20px; font-size: 11px; letter-spacing: 1px; font-weight: bold; } QPushButton:hover { background-color: #f0a500; color: #0e0e0f; }</string>
+             </property>
+            </widget>
+           </item>
+          </layout>
+         </widget>
+        </item>
+        <item>
+         <widget class="QPlainTextEdit" name="txtTranscripcion">
+          <property name="placeholderText">
+           <string>La transcripcion aparecera aqui o podes escribirla directamente...</string>
+          </property>
+          <property name="font">
+           <font>
+            <family>Consolas</family>
+            <pointsize>10</pointsize>
+           </font>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <widget class="QPushButton" name="btnAnalizar">
+          <property name="text">
+           <string>ANALIZAR CON GEMINI</string>
+          </property>
+          <property name="minimumHeight">
+           <number>46</number>
+          </property>
+          <property name="styleSheet">
+           <string>QPushButton { background-color: #f0a500; color: #0e0e0f; border: none; border-radius: 4px; font-size: 13px; font-weight: bold; letter-spacing: 2px; } QPushButton:hover { background-color: #ffc107; } QPushButton:disabled { background-color: #2a2510; color: #5a5020; }</string>
+          </property>
+         </widget>
+        </item>
+       </layout>
+      </widget>
+      <widget class="QWidget" name="tabResultados">
+       <attribute name="title">
+        <string>RESULTADOS</string>
+       </attribute>
+       <layout class="QVBoxLayout" name="layoutTab2">
+        <property name="leftMargin">
+         <number>16</number>
+        </property>
+        <property name="topMargin">
+         <number>16</number>
+        </property>
+        <property name="rightMargin">
+         <number>16</number>
+        </property>
+        <property name="bottomMargin">
+         <number>16</number>
+        </property>
+        <property name="spacing">
+         <number>10</number>
+        </property>
+        <item>
+         <widget class="QTabWidget" name="tabResultadosInterno">
+          <property name="documentMode">
+           <bool>true</bool>
+          </property>
+          <property name="styleSheet">
+           <string>QTabWidget#tabResultadosInterno QTabBar::tab { padding: 8px 22px; font-size: 11px; letter-spacing: 1px; color: #6b6b70; background-color: #141416; border: none; border-bottom: 2px solid transparent; }
+QTabWidget#tabResultadosInterno QTabBar::tab:selected { color: #4ade80; border-bottom: 2px solid #4ade80; }
+QTabWidget#tabResultadosInterno QTabBar::tab:hover:!selected { color: #c8c6c0; }
+QTabWidget#tabResultadosInterno QTabWidget::pane { border: 1px solid #2a2a2e; background-color: #111113; }</string>
+          </property>
+          <widget class="QWidget" name="subTabResumen">
+           <attribute name="title">
+            <string>RESUMEN</string>
+           </attribute>
+           <layout class="QVBoxLayout" name="layoutSubResumen">
+            <property name="leftMargin">
+             <number>12</number>
+            </property>
+            <property name="topMargin">
+             <number>12</number>
+            </property>
+            <property name="rightMargin">
+             <number>12</number>
+            </property>
+            <property name="bottomMargin">
+             <number>12</number>
+            </property>
+            <item>
+             <widget class="QPlainTextEdit" name="txtResumen">
+              <property name="readOnly">
+               <bool>true</bool>
+              </property>
+              <property name="placeholderText">
+               <string>El resumen ejecutivo aparecera aqui despues del analisis...</string>
+              </property>
+             </widget>
+            </item>
+           </layout>
+          </widget>
+          <widget class="QWidget" name="subTabActa">
+           <attribute name="title">
+            <string>ACTA</string>
+           </attribute>
+           <layout class="QVBoxLayout" name="layoutSubActa">
+            <property name="leftMargin">
+             <number>12</number>
+            </property>
+            <property name="topMargin">
+             <number>12</number>
+            </property>
+            <property name="rightMargin">
+             <number>12</number>
+            </property>
+            <property name="bottomMargin">
+             <number>12</number>
+            </property>
+            <item>
+             <widget class="QPlainTextEdit" name="txtActa">
+              <property name="readOnly">
+               <bool>true</bool>
+              </property>
+              <property name="placeholderText">
+               <string>El acta formal generada aparecera aqui despues del analisis...</string>
+              </property>
+             </widget>
+            </item>
+           </layout>
+          </widget>
+          <widget class="QWidget" name="subTabTareas">
+           <attribute name="title">
+            <string>TAREAS</string>
+           </attribute>
+           <layout class="QVBoxLayout" name="layoutSubTareas">
+            <property name="leftMargin">
+             <number>12</number>
+            </property>
+            <property name="topMargin">
+             <number>12</number>
+            </property>
+            <property name="rightMargin">
+             <number>12</number>
+            </property>
+            <property name="bottomMargin">
+             <number>12</number>
+            </property>
+            <item>
+             <widget class="QPlainTextEdit" name="txtTareas">
+              <property name="readOnly">
+               <bool>true</bool>
+              </property>
+              <property name="placeholderText">
+               <string>Las tareas por participante apareceran aqui despues del analisis...</string>
+              </property>
+              <property name="font">
+               <font>
+                <family>Consolas</family>
+                <pointsize>10</pointsize>
+               </font>
+              </property>
+             </widget>
+            </item>
+           </layout>
+          </widget>
+         </widget>
+        </item>
+        <item>
+         <widget class="QPushButton" name="btnExportarPDF">
+          <property name="text">
+           <string>EXPORTAR ACTA Y TAREAS COMO PDF</string>
+          </property>
+          <property name="minimumHeight">
+           <number>46</number>
+          </property>
+          <property name="enabled">
+           <bool>false</bool>
+          </property>
+          <property name="styleSheet">
+           <string>QPushButton { background-color: transparent; color: #4ade80; border: 1px solid #4ade80; border-radius: 4px; font-size: 12px; font-weight: bold; letter-spacing: 2px; } QPushButton:hover { background-color: #4ade80; color: #0e0e0f; } QPushButton:disabled { color: #1a3a1a; border-color: #1a3a1a; }</string>
+          </property>
+         </widget>
+        </item>
+       </layout>
+      </widget>
+     </widget>
+    </item>
+   </layout>
+  </widget>
+  <widget class="QStatusBar" name="statusbar"/>
+ </widget>
+ <resources/>
+ <connections/>
+</ui>
