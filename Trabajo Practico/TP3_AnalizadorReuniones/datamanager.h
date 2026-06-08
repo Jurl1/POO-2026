@@ -19,6 +19,9 @@
 #include "algoritmoIA.h"
 #include <QList>
 #include <QString>
+#include <QNetworkAccessManager>
+#include <QNetworkReply>
+#include <QSqlDatabase>
 
 class DataManager
 {
@@ -43,9 +46,12 @@ public:
     // Limpia el historial de la sesion
     void limpiarHistorial();
 
+    // Envia el resultado del analisis al servidor MySQL via API REST
+    void enviarAlServidor(const QString &tema, const ResultadoAnalisis &resultado);
+
 private:
     // Constructor privado: nadie puede crear DataManager directamente
-    DataManager() {}
+    DataManager();
 
     // Copia y asignacion prohibidas (patron Singleton)
     DataManager(const DataManager&)            = delete;
@@ -56,6 +62,13 @@ private:
     // static: pertenece a la clase, se comparte entre todas las instancias
     // (en este caso hay solo una, pero el concepto aplica igual)
     static int m_contadorAnalisis;
+
+    // URL de la API REST en el servidor
+    static const QString SERVER_API_URL;
+
+    QNetworkAccessManager *m_networkManager;
+    QSqlDatabase m_db;
+    void inicializarBaseDeDatos();
 };
 
 #endif // DATAMANAGER_H

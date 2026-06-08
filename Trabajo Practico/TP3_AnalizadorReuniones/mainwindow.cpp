@@ -132,6 +132,9 @@ void MainWindow::onAnalisisCompleto(const ResultadoAnalisis &resultado)
     ui->txtActa->setPlainText(resultado.acta);
     ui->txtTareas->setPlainText(resultado.tareasPorParticipante);
 
+    // Enviar al VPS MySQL remoto
+    DataManager::instancia().enviarAlServidor(m_tema, resultado);
+
     actualizarEstadisticas();
 
     ui->btnAnalizar->setEnabled(true);

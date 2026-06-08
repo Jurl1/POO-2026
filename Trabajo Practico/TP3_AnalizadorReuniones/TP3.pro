@@ -1,6 +1,9 @@
-QT += core gui widgets network printsupport
+QT += core gui widgets network printsupport sql
 
 CONFIG += c++17
+
+# Exportar el directorio del proyecto para guardar la BD ahí
+DEFINES += PRO_DIR=\"\\\"$$_PRO_FILE_PWD_\\\"\"
 
 SOURCES += \
     main.cpp \
