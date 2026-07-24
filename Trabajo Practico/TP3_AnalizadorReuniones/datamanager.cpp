@@ -7,16 +7,20 @@
 #include <QSqlQuery>
 #include <QSqlError>
 
-// Definicion del miembro static fuera de la clase (obligatorio en C++)
-// Se inicializa en 0 una sola vez al arrancar el programa
+// Definición del miembro static fuera de la clase
 int DataManager::m_contadorAnalisis = 0;
 
-// URL de la API REST en el servidor VPS
-const QString DataManager::SERVER_API_URL = "http://100.88.165.95:8080/api.php";
+// URL de la API REST en el servidor HTTPS remoto (Cloudflare Tunnel)
+const QString DataManager::SERVER_API_URL = "https://poo.juriserver.website/api.php";
 
 DataManager::DataManager() : m_networkManager(nullptr)
 {
     inicializarBaseDeDatos();
+}
+
+void DataManager::setToken(const QString &token)
+{
+    m_token = token;
 }
 
 void DataManager::inicializarBaseDeDatos()
@@ -56,8 +60,6 @@ void DataManager::inicializarBaseDeDatos()
 
 DataManager& DataManager::instancia()
 {
-    // Variable local static: se crea la primera vez que se llama instancia()
-    // y persiste por toda la vida del programa. Es thread-safe en C++11+.
     static DataManager dm;
     return dm;
 }
@@ -78,7 +80,7 @@ void DataManager::registrarAnalisis(const ResultadoAnalisis &resultado)
     }
 
     m_historial.append(resultado);
-    m_contadorAnalisis++;  // incrementa el contador estatico
+    m_contadorAnalisis++;
 }
 
 int DataManager::cantidadAnalisis() const
@@ -108,21 +110,17 @@ void DataManager::limpiarHistorial()
     QSqlQuery query;
     query.exec("DELETE FROM analisis");
     m_historial.clear();
-    // Nota: m_contadorAnalisis NO se resetea,
-    // porque cuenta el total historico de la sesion
 }
 
-// Envia los datos del analisis al servidor VPS via HTTP POST
+// Envía los datos del análisis al servidor remoto vía HTTP POST con JWT
 void DataManager::enviarAlServidor(const QString &tema, const ResultadoAnalisis &resultado)
 {
     if (!resultado.valido) return;
 
-    // Crear el manager si no existe
     if (!m_networkManager) {
         m_networkManager = new QNetworkAccessManager;
     }
 
-    // Construir el JSON con los datos del analisis
     QJsonObject json;
     json["tema"]           = tema;
     json["resumen"]        = resultado.resumenEjecutivo;
@@ -134,12 +132,16 @@ void DataManager::enviarAlServidor(const QString &tema, const ResultadoAnalisis 
     QNetworkRequest request(url);
     request.setHeader(QNetworkRequest::ContentTypeHeader, "application/json");
 
+    // Incluir token JWT para autenticación en el servidor
+    if (!m_token.isEmpty()) {
+        request.setRawHeader("Authorization", ("Bearer " + m_token).toUtf8());
+    }
+
     QNetworkReply *reply = m_networkManager->post(request, QJsonDocument(json).toJson());
 
-    // Conectar para verificar si se envio correctamente
     QObject::connect(reply, &QNetworkReply::finished, [reply]() {
         if (reply->error() == QNetworkReply::NoError) {
-            qDebug() << "Datos enviados al servidor MySQL correctamente";
+            qDebug() << "Datos enviados al servidor MySQL remoto correctamente";
             qDebug() << "Respuesta:" << reply->readAll();
         } else {
             qDebug() << "Error al enviar datos al servidor:" << reply->errorString();
@@ -147,4 +149,3 @@ void DataManager::enviarAlServidor(const QString &tema, const ResultadoAnalisis 
         reply->deleteLater();
     });
 }
-

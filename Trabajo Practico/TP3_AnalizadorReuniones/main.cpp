@@ -1,11 +1,11 @@
-#include "mainwindow.h"
+#include "loginwindow.h"
 #include <QApplication>
 
 int main(int argc, char *argv[])
 {
     QApplication a(argc, argv);
     a.setApplicationName("Analizador de Reuniones");
-    MainWindow w;
-    w.show();
+    LoginWindow login;
+    login.show();
     return a.exec();
 }

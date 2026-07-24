@@ -125,7 +125,7 @@ QFrame#frameDropZone { border: 2px dashed #2a2a2e; border-radius: 6px; backgroun
     <item>
      <widget class="QTabWidget" name="tabWidget">
       <property name="currentIndex">
-       <number>1</number>
+       <number>0</number>
       </property>
       <property name="documentMode">
        <bool>true</bool>
@@ -193,14 +193,20 @@ QFrame#frameDropZone { border: 2px dashed #2a2a2e; border-radius: 6px; backgroun
          </widget>
         </item>
         <item>
-         <widget class="QPushButton" name="btnAnalizar">
-          <property name="styleSheet">
-           <string>QPushButton { background-color: #f0a500; color: #0e0e0f; border: none; border-radius: 4px; font-size: 13px; font-weight: bold; letter-spacing: 2px; } QPushButton:hover { background-color: #ffc107; } QPushButton:disabled { background-color: #2a2510; color: #5a5020; }</string>
-          </property>
-          <property name="text">
-           <string>ANALIZAR CON GEMINI</string>
-          </property>
-         </widget>
+          <widget class="QPushButton" name="btnAnalizar">
+           <property name="minimumSize">
+            <size>
+             <width>0</width>
+             <height>48</height>
+            </size>
+           </property>
+           <property name="styleSheet">
+            <string>QPushButton { background-color: #f0a500; color: #0e0e0f; border: none; border-radius: 4px; font-size: 13px; font-weight: bold; letter-spacing: 2px; padding: 14px; } QPushButton:hover { background-color: #ffc107; } QPushButton:disabled { background-color: #2a2510; color: #5a5020; }</string>
+           </property>
+           <property name="text">
+            <string>ANALIZAR CON GEMINI</string>
+           </property>
+          </widget>
         </item>
        </layout>
       </widget>
@@ -330,27 +336,336 @@ QTabWidget#tabResultadosInterno QTabWidget::pane { border: 1px solid #2a2a2e; ba
           </widget>
          </widget>
         </item>
-        <item>
-         <widget class="QPushButton" name="btnExportarPDF">
-          <property name="enabled">
-           <bool>false</bool>
-          </property>
-          <property name="styleSheet">
-           <string>QPushButton { background-color: transparent; color: #4ade80; border: 1px solid #4ade80; border-radius: 4px; font-size: 12px; font-weight: bold; letter-spacing: 2px; } QPushButton:hover { background-color: #4ade80; color: #0e0e0f; } QPushButton:disabled { color: #1a3a1a; border-color: #1a3a1a; }</string>
-          </property>
-          <property name="text">
-           <string>EXPORTAR ACTA Y TAREAS COMO PDF</string>
-          </property>
-         </widget>
-        </item>
-       </layout>
+         <item>
+          <widget class="QPushButton" name="btnExportarPDF">
+           <property name="enabled">
+            <bool>false</bool>
+           </property>
+           <property name="minimumSize">
+            <size>
+             <width>0</width>
+             <height>48</height>
+            </size>
+           </property>
+           <property name="styleSheet">
+            <string>QPushButton { background-color: transparent; color: #4ade80; border: 1px solid #4ade80; border-radius: 4px; font-size: 12px; font-weight: bold; letter-spacing: 2px; padding: 14px; } QPushButton:hover { background-color: #4ade80; color: #0e0e0f; } QPushButton:disabled { color: #1a3a1a; border-color: #1a3a1a; }</string>
+           </property>
+           <property name="text">
+            <string>EXPORTAR ACTA Y TAREAS COMO PDF</string>
+           </property>
+          </widget>
+         </item>
+        </layout>
+       </widget>
+       <widget class="QWidget" name="tabHistorial">
+        <attribute name="title">
+         <string>HISTORIAL</string>
+        </attribute>
+        <layout class="QVBoxLayout" name="layoutTab3">
+         <property name="spacing">
+          <number>10</number>
+         </property>
+         <property name="leftMargin">
+          <number>16</number>
+         </property>
+         <property name="topMargin">
+          <number>16</number>
+         </property>
+         <property name="rightMargin">
+          <number>16</number>
+         </property>
+         <property name="bottomMargin">
+          <number>16</number>
+         </property>
+         <item>
+          <layout class="QHBoxLayout" name="layoutHeaderHistorial">
+           <item>
+            <widget class="QLabel" name="lblTituloHistorial">
+             <property name="styleSheet">
+              <string>color: #6b6b70; font-size: 11px; letter-spacing: 1px;</string>
+             </property>
+             <property name="text">
+              <string>REUNIONES GUARDADAS EN EL SERVIDOR REMOTO</string>
+             </property>
+            </widget>
+           </item>
+           <item>
+            <spacer name="spacerHistorial">
+             <property name="orientation">
+              <enum>Qt::Orientation::Horizontal</enum>
+             </property>
+             <property name="sizeHint" stdset="0">
+              <size>
+               <width>40</width>
+               <height>20</height>
+              </size>
+             </property>
+            </spacer>
+           </item>
+           <item>
+            <widget class="QPushButton" name="btnRefrescarHistorial">
+             <property name="styleSheet">
+              <string>QPushButton { background-color: transparent; color: #f0a500; border: 1px solid #f0a500; border-radius: 4px; padding: 6px 14px; font-size: 11px; letter-spacing: 1px; font-weight: bold; } QPushButton:hover { background-color: #f0a500; color: #0e0e0f; }</string>
+             </property>
+             <property name="text">
+              <string>REFRESCAR HISTORIAL</string>
+             </property>
+            </widget>
+           </item>
+          </layout>
+         </item>
+         <item>
+          <widget class="QSplitter" name="splitterHistorial">
+           <property name="orientation">
+            <enum>Qt::Orientation::Horizontal</enum>
+           </property>
+           <widget class="QListWidget" name="listHistorial">
+            <property name="styleSheet">
+             <string>QListWidget { background-color: #111113; border: 1px solid #2a2a2e; border-radius: 4px; color: #d8d6d0; padding: 6px; } QListWidget::item { padding: 10px; border-bottom: 1px solid #1a1a1e; border-radius: 4px; } QListWidget::item:selected { background-color: #2a2510; color: #f0a500; border: 1px solid #f0a500; } QListWidget::item:hover:!selected { background-color: #1a1a1e; }</string>
+            </property>
+           </widget>
+           <widget class="QWidget" name="widgetDetalleHistorial">
+            <layout class="QVBoxLayout" name="layoutDetalleHistorial">
+             <property name="leftMargin">
+              <number>0</number>
+             </property>
+             <property name="topMargin">
+              <number>0</number>
+             </property>
+             <property name="rightMargin">
+              <number>0</number>
+             </property>
+             <property name="bottomMargin">
+              <number>0</number>
+             </property>
+             <item>
+              <widget class="QTabWidget" name="tabDetalleHistorialInterno">
+               <property name="styleSheet">
+                <string>QTabWidget#tabDetalleHistorialInterno QTabBar::tab { padding: 8px 22px; font-size: 11px; letter-spacing: 1px; color: #6b6b70; background-color: #141416; border: none; border-bottom: 2px solid transparent; } QTabWidget#tabDetalleHistorialInterno QTabBar::tab:selected { color: #f0a500; border-bottom: 2px solid #f0a500; } QTabWidget#tabDetalleHistorialInterno QTabBar::tab:hover:!selected { color: #c8c6c0; } QTabWidget#tabDetalleHistorialInterno QTabWidget::pane { border: 1px solid #2a2a2e; background-color: #111113; }</string>
+               </property>
+               <property name="documentMode">
+                <bool>true</bool>
+               </property>
+               <widget class="QWidget" name="subTabHistorialResumen">
+                <attribute name="title">
+                 <string>RESUMEN</string>
+                </attribute>
+                <layout class="QVBoxLayout" name="layoutHistorialResumen">
+                 <item>
+                  <widget class="QPlainTextEdit" name="txtHistorialResumen">
+                   <property name="readOnly">
+                    <bool>true</bool>
+                   </property>
+                  </widget>
+                 </item>
+                </layout>
+               </widget>
+               <widget class="QWidget" name="subTabHistorialActa">
+                <attribute name="title">
+                 <string>ACTA</string>
+                </attribute>
+                <layout class="QVBoxLayout" name="layoutHistorialActa">
+                 <item>
+                  <widget class="QPlainTextEdit" name="txtHistorialActa">
+                   <property name="readOnly">
+                    <bool>true</bool>
+                   </property>
+                  </widget>
+                 </item>
+                </layout>
+               </widget>
+               <widget class="QWidget" name="subTabHistorialTareas">
+                <attribute name="title">
+                 <string>TAREAS</string>
+                </attribute>
+                <layout class="QVBoxLayout" name="layoutHistorialTareas">
+                 <item>
+                  <widget class="QPlainTextEdit" name="txtHistorialTareas">
+                   <property name="readOnly">
+                    <bool>true</bool>
+                   </property>
+                  </widget>
+                 </item>
+                </layout>
+               </widget>
+              </widget>
+             </item>
+             <item>
+              <widget class="QPushButton" name="btnExportarHistorialPDF">
+               <property name="enabled">
+                <bool>false</bool>
+               </property>
+               <property name="minimumSize">
+                <size>
+                 <width>0</width>
+                 <height>40</height>
+                </size>
+               </property>
+               <property name="styleSheet">
+                <string>QPushButton { background-color: transparent; color: #4ade80; border: 1px solid #4ade80; border-radius: 4px; font-size: 11px; font-weight: bold; letter-spacing: 1px; padding: 10px; } QPushButton:hover { background-color: #4ade80; color: #0e0e0f; } QPushButton:disabled { color: #1a3a1a; border-color: #1a3a1a; }</string>
+               </property>
+               <property name="text">
+                <string>EXPORTAR REUNIÓN SELECCIONADA A PDF</string>
+               </property>
+               </widget>
+              </item>
+             </layout>
+            </widget>
+           </widget>
+          </item>
+         </layout>
+        </widget>
+       <widget class="QWidget" name="tabPerfil">
+        <attribute name="title">
+         <string>PERFIL</string>
+        </attribute>
+        <layout class="QVBoxLayout" name="layoutTab4">
+         <property name="spacing">
+          <number>16</number>
+         </property>
+         <property name="leftMargin">
+          <number>24</number>
+         </property>
+         <property name="topMargin">
+          <number>24</number>
+         </property>
+         <property name="rightMargin">
+          <number>24</number>
+         </property>
+         <property name="bottomMargin">
+          <number>24</number>
+         </property>
+         <item>
+          <widget class="QGroupBox" name="groupPerfilUsuario">
+           <property name="title">
+            <string>INFORMACIÓN DE LA CUENTA</string>
+           </property>
+           <layout class="QVBoxLayout" name="layoutPerfilInfo">
+            <item>
+             <widget class="QLabel" name="lblPerfilUsuario">
+              <property name="styleSheet">
+               <string>color: #f0a500; font-size: 16px; font-weight: bold;</string>
+              </property>
+              <property name="text">
+               <string>Usuario: -</string>
+              </property>
+             </widget>
+            </item>
+            <item>
+             <widget class="QLabel" name="lblPerfilEstado">
+              <property name="styleSheet">
+               <string>color: #4ade80; font-size: 12px;</string>
+              </property>
+              <property name="text">
+               <string>● Conectado al servidor remoto (poo.juriserver.website)</string>
+              </property>
+             </widget>
+            </item>
+           </layout>
+          </widget>
+         </item>
+         <item>
+          <widget class="QGroupBox" name="groupPerfilApiKey">
+           <property name="title">
+            <string>CONFIGURACIÓN DE GEMINI API KEY</string>
+           </property>
+           <layout class="QVBoxLayout" name="layoutPerfilApiKey">
+            <property name="spacing">
+             <number>10</number>
+            </property>
+            <item>
+             <widget class="QLabel" name="lblPerfilApiKeyHint">
+              <property name="styleSheet">
+               <string>color: #6b6b70; font-size: 11px;</string>
+              </property>
+              <property name="text">
+               <string>Podés cambiar tu API Key de Google Gemini en cualquier momento. Se guardará encriptada en tu cuenta.</string>
+              </property>
+             </widget>
+            </item>
+            <item>
+             <layout class="QHBoxLayout" name="layoutPerfilApiKeyInput">
+              <item>
+               <widget class="QLineEdit" name="txtPerfilApiKey">
+                <property name="echoMode">
+                 <enum>QLineEdit::EchoMode::Password</enum>
+                </property>
+                <property name="placeholderText">
+                 <string>Ingresá la nueva API Key (AIza...)</string>
+                </property>
+               </widget>
+              </item>
+              <item>
+               <widget class="QPushButton" name="btnGuardarApiKey">
+                <property name="styleSheet">
+                 <string>QPushButton { background-color: #f0a500; color: #0e0e0f; border: none; border-radius: 4px; padding: 8px 18px; font-size: 11px; font-weight: bold; letter-spacing: 1px; } QPushButton:hover { background-color: #ffc107; }</string>
+                </property>
+                <property name="text">
+                 <string>GUARDAR NUEVA API KEY</string>
+                </property>
+               </widget>
+              </item>
+             </layout>
+            </item>
+            <item>
+             <widget class="QLabel" name="lblPerfilApiKeyError">
+              <property name="styleSheet">
+               <string>color: #f87171; font-size: 11px;</string>
+              </property>
+              <property name="text">
+               <string/>
+              </property>
+             </widget>
+            </item>
+           </layout>
+          </widget>
+         </item>
+         <item>
+          <widget class="QGroupBox" name="groupPerfilSesion">
+           <property name="title">
+            <string>SESIÓN DE USUARIO</string>
+           </property>
+           <layout class="QVBoxLayout" name="layoutPerfilSesion">
+            <item>
+             <widget class="QPushButton" name="btnCerrarSesion">
+              <property name="minimumSize">
+               <size>
+                <width>0</width>
+                <height>42</height>
+               </size>
+              </property>
+              <property name="styleSheet">
+               <string>QPushButton { background-color: transparent; color: #f87171; border: 1px solid #f87171; border-radius: 4px; font-size: 12px; font-weight: bold; letter-spacing: 1px; padding: 10px; } QPushButton:hover { background-color: #f87171; color: #0e0e0f; }</string>
+              </property>
+              <property name="text">
+               <string>CERRAR SESIÓN (LOGOUT)</string>
+              </property>
+             </widget>
+            </item>
+           </layout>
+          </widget>
+         </item>
+         <item>
+          <spacer name="spacerPerfil">
+           <property name="orientation">
+            <enum>Qt::Orientation::Vertical</enum>
+           </property>
+           <property name="sizeHint" stdset="0">
+            <size>
+             <width>20</width>
+             <height>40</height>
+            </size>
+           </property>
+          </spacer>
+         </item>
+        </layout>
+       </widget>
       </widget>
-     </widget>
-    </item>
-   </layout>
-  </widget>
-  <widget class="QStatusBar" name="statusbar"/>
- </widget>
- <resources/>
- <connections/>
-</ui>
+     </item>
+    </layout>
+   </widget>
+    <widget class="QStatusBar" name="statusbar"/>
+   </widget>
+  <resources/>
+  <connections/>
+ </ui>

@@ -8,6 +8,7 @@ DEFINES += PRO_DIR=\"\\\"$$_PRO_FILE_PWD_\\\"\"
 SOURCES += \
     main.cpp \
     mainwindow.cpp \
+    loginwindow.cpp \
     algoritmoIA.cpp \
     analizadorgemini.cpp \
     datamanager.cpp \
@@ -15,6 +16,7 @@ SOURCES += \
 
 HEADERS += \
     mainwindow.h \
+    loginwindow.h \
     algoritmoIA.h \
     analizadorgemini.h \
     datamanager.h \
