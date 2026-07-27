@@ -288,7 +288,7 @@ void MainWindow::refrescarHistorialServidor()
     ui->btnRefrescarHistorial->setEnabled(false);
     ui->lblTituloHistorial->setText("CARGANDO HISTORIAL DEL SERVIDOR...");
 
-    QUrl url("https://poo.juriserver.website/api.php");
+    QUrl url("https://poo.juriserver.website/historial");
     QNetworkRequest request(url);
     if (!m_token.isEmpty()) {
         request.setRawHeader("Authorization", ("Bearer " + m_token).toUtf8());
@@ -375,7 +375,7 @@ void MainWindow::on_btnGuardarApiKey_clicked()
     QJsonObject json;
     json["api_key"] = nuevaKey;
 
-    QUrl url("https://poo.juriserver.website/update_key.php");
+    QUrl url("https://poo.juriserver.website/update_key");
     QNetworkRequest request(url);
     request.setHeader(QNetworkRequest::ContentTypeHeader, "application/json");
     if (!m_token.isEmpty()) {

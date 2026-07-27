@@ -10,8 +10,8 @@
 // Definición del miembro static fuera de la clase
 int DataManager::m_contadorAnalisis = 0;
 
-// URL de la API REST en el servidor HTTPS remoto (Cloudflare Tunnel)
-const QString DataManager::SERVER_API_URL = "https://poo.juriserver.website/api.php";
+// URL de la API FastAPI en el servidor HTTPS remoto (Cloudflare Tunnel)
+const QString DataManager::SERVER_API_URL = "https://poo.juriserver.website/analisis";
 
 DataManager::DataManager() : m_networkManager(nullptr)
 {
@@ -141,7 +141,7 @@ void DataManager::enviarAlServidor(const QString &tema, const ResultadoAnalisis 
 
     QObject::connect(reply, &QNetworkReply::finished, [reply]() {
         if (reply->error() == QNetworkReply::NoError) {
-            qDebug() << "Datos enviados al servidor MySQL remoto correctamente";
+            qDebug() << "Datos enviados al servidor FastAPI correctamente";
             qDebug() << "Respuesta:" << reply->readAll();
         } else {
             qDebug() << "Error al enviar datos al servidor:" << reply->errorString();

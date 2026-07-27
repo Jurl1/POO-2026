@@ -8,7 +8,7 @@
 //   - Almacenar el historial de análisis realizados en la sesión
 //   - Proveer estadísticas (cantidad de análisis, participantes vistos)
 //   - Guardar localmente en SQLite
-//   - Enviar al servidor MySQL remoto (poo.juriserver.website) autenticándose con JWT
+//   - Enviar al servidor FastAPI (poo.juriserver.website) autenticándose con JWT
 //   - Implementa el patrón Singleton con miembro static
 // =============================================================================
 

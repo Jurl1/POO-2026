@@ -192,7 +192,7 @@ void LoginWindow::onLoginClicked()
     json["usuario"]  = usuario;
     json["password"] = password;
 
-    QUrl url(SERVER_URL + "/login.php");
+    QUrl url(SERVER_URL + "/login");
     QNetworkRequest request(url);
     request.setHeader(QNetworkRequest::ContentTypeHeader, "application/json");
 
@@ -211,7 +211,7 @@ void LoginWindow::onLoginResponse(QNetworkReply *reply)
     QJsonDocument doc = QJsonDocument::fromJson(responseData);
 
     if (reply->error() != QNetworkReply::NoError) {
-        QString msg = "Error de conexión con el servidor.";
+        QString msg = "Error de conexión (" + QString::number(reply->attribute(QNetworkRequest::HttpStatusCodeAttribute).toInt()) + "): " + reply->errorString();
         if (doc.isObject() && doc.object().contains("error"))
             msg = doc.object()["error"].toString();
         m_loginError->setText(msg);
@@ -273,7 +273,7 @@ void LoginWindow::onRegistroClicked()
     json["password"] = password;
     json["api_key"]  = apiKey;
 
-    QUrl url(SERVER_URL + "/register.php");
+    QUrl url(SERVER_URL + "/register");
     QNetworkRequest request(url);
     request.setHeader(QNetworkRequest::ContentTypeHeader, "application/json");
 
@@ -292,7 +292,7 @@ void LoginWindow::onRegistroResponse(QNetworkReply *reply)
     QJsonDocument doc = QJsonDocument::fromJson(responseData);
 
     if (reply->error() != QNetworkReply::NoError) {
-        QString msg = "Error de conexión con el servidor.";
+        QString msg = "Error de conexión (" + QString::number(reply->attribute(QNetworkRequest::HttpStatusCodeAttribute).toInt()) + "): " + reply->errorString();
         if (doc.isObject() && doc.object().contains("error"))
             msg = doc.object()["error"].toString();
         m_regError->setText(msg);
